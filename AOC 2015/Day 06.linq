@@ -7,7 +7,7 @@
 #load "BenchmarkDotNet"
 #load "xunit"
 #load "..\AOC v3"
-#LINQPad optimize-
+#LINQPad optimize+
 
 
 static Day06 day = new Day06();
