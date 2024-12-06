@@ -61,7 +61,7 @@ public class Day05 : AdventOfCode
 		return sum;
 	}
 
-	public static int Sort(List<int> numbers, (int first, int second)[] data)
+	public static int BongoSort(List<int> numbers, (int first, int second)[] data)
 	{
 		bool changed = true;
 		while (changed)
@@ -99,7 +99,7 @@ public class Day05 : AdventOfCode
 				{
 					if (first)
 						return -1;
-					return Sort(numbers, data);
+					return BongoSort(numbers, data);
 				}
 			}
 		}

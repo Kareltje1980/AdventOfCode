@@ -37,13 +37,35 @@ public class Day04 : AdventOfCode
 	public override object SolveA(string[] lines) => Solve(true, lines[0]);
 
 	public override object SolveB(string[] lines) => Solve(false, lines[0]);
-	
-	
+
+
+	[Benchmark]
+	public int CreateMD5()
+	{
+		using (var provider = new System.Security.Cryptography.MD5CryptoServiceProvider())
+		{
+			var key = this.Lines[0];
+			int i = 0;
+			while (true)
+			{
+				i++;
+				byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes($"{key}{i}");
+				byte[] hashBytes = provider.ComputeHash(inputBytes);
+				var s = Convert.ToHexString(hashBytes);
+				if (s.StartsWith("000000"))
+					return i;
+			}
+		}
+	}
+
 	private object Solve(bool first, string key)
 	{		
 		using (var provider = new System.Security.Cryptography.MD5CryptoServiceProvider())
 		{
+			var r1 = new byte[16];
+			var r = r1.AsSpan(0, 16);
 			var bytes = Encoding.ASCII.GetBytes(key + "0");
+			
 			bytes[bytes.Length - 1]--;
 			int last = bytes.Length - 1;
 			for (int counter = 0; counter < int.MaxValue; counter++)
@@ -66,7 +88,7 @@ public class Day04 : AdventOfCode
 				}				
 				last = bytes.Length - 1;
 
-				var r = provider.ComputeHash(bytes);
+				System.Security.Cryptography.MD5.HashData(bytes, r);
 
 				if (first && r[0] == 0x00 && r[1] == 0x00 && r[2] < 0x10)
 					return System.Text.Encoding.Default.GetString(bytes)[key.Length..];

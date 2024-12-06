@@ -7,7 +7,7 @@
 #load "BenchmarkDotNet"
 #load "xunit"
 #load "..\AOC v3"
-#LINQPad optimize-
+#LINQPad optimize+
 
 
 static Day05 day = new Day05();
@@ -26,7 +26,7 @@ void Main()
 	"DONE".Dump();
 }
 	
-
+  
 [ShortRunJob]
 public class Day05 : AdventOfCode
 {
