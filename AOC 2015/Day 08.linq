@@ -30,36 +30,33 @@ void Main()
 [ShortRunJob]
 public class Day08 : AdventOfCode
 {
-	const string HEX = "0123456789ABCDF";
+	const string HEX = "0123456789abcdef";
 	public override int Year => 2015;
 
 	public override int Day => 8;
 
 	public override object SolveA(string[] lines)
 	{
-		//lines = new[]{
-		//
-		//	"\"\"",
-		//	"\"abc\"",
-		//	"""
-		//	"aaa\"aaa"
-		//	""", 
-		//	"\"\\x27\""
-		//};
-
-
 		var linesLength = lines.Sum(z => z.Length);
 		var linesTrimLength = 0;
 		foreach (var line in lines)
 		{
-			if(CalcLineA(line) != CalcLineA2(line))
-				line.Dump();
+			linesTrimLength += CalcLineA(line);
 		}
-		return linesLength -linesTrimLength;
+		return linesLength - linesTrimLength;
 	}
 
-	public override object SolveB(string[] lines){return 0;}
-	
+	public override object SolveB(string[] lines)
+	{
+		var linesLength = lines.Sum(z => z.Length);
+		var linesTrimLength = 0;
+		foreach (var line in lines)
+		{
+			linesTrimLength += CalcLineA(line);
+		}
+		return linesTrimLength - linesLength;
+	}
+
 	public static int CalcLineA(string line)
 	{
 		int c = 0;
@@ -93,7 +90,6 @@ public class Day08 : AdventOfCode
 				.Replace("\\\\", "?"),
 			@"\\x[0-9a-f]{2}", "?").Length;
 	}
-
 }
 
 
