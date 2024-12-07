@@ -4,6 +4,12 @@
   <Namespace>Xunit</Namespace>
 </Query>
 
+<Query Kind="Program">
+  <NuGetReference Version="0.13.8">BenchmarkDotNet</NuGetReference>
+  <Namespace>BenchmarkDotNet.Attributes</Namespace>
+  <Namespace>Xunit</Namespace>
+</Query>
+
 #load "BenchmarkDotNet"
 #load "xunit"
 #load "..\AOC v3"
@@ -30,42 +36,45 @@ void Main()
 [ShortRunJob]
 public class Day08 : AdventOfCode
 {
-	const string HEX = "0123456789abcdef";
+	const string HEX = "0123456789ABCDF";
 	public override int Year => 2015;
 
 	public override int Day => 8;
 
 	public override object SolveA(string[] lines)
 	{
+		//lines = new[]{
+		//
+		//	"\"\"",
+		//	"\"abc\"",
+		//	"""
+		//	"aaa\"aaa"
+		//	""", 
+		//	"\"\\x27\""
+		//};
+
+
 		var linesLength = lines.Sum(z => z.Length);
 		var linesTrimLength = 0;
 		foreach (var line in lines)
 		{
-			linesTrimLength += CalcLineA(line);
+			if (CalcLineA(line) != CalcLineA2(line))
+				line.Dump();
 		}
 		return linesLength - linesTrimLength;
 	}
 
-	public override object SolveB(string[] lines)
-	{
-		var linesLength = lines.Sum(z => z.Length);
-		var linesTrimLength = 0;
-		foreach (var line in lines)
-		{
-			linesTrimLength += CalcLineA(line);
-		}
-		return linesTrimLength - linesLength;
-	}
+	public override object SolveB(string[] lines) { return 0; }
 
 	public static int CalcLineA(string line)
 	{
 		int c = 0;
-		for (int i = 1; i < line.Length-1; i++)
+		for (int i = 1; i < line.Length - 1; i++)
 		{
-			if(string.IsNullOrWhiteSpace(line[i].ToString())) continue;
+			if (string.IsNullOrWhiteSpace(line[i].ToString())) continue;
 			c++;
 			//size 2 \\ and \"
-			
+
 			if (line[i] == '\\' && (line[i + 1] == '\\' || line[i + 1] == '"'))
 			{
 				i++;
@@ -81,7 +90,7 @@ public class Day08 : AdventOfCode
 		}
 		return c;
 	}
-	
+
 	public static int CalcLineA2(string s)
 	{
 		return Regex.Replace(
@@ -90,6 +99,7 @@ public class Day08 : AdventOfCode
 				.Replace("\\\\", "?"),
 			@"\\x[0-9a-f]{2}", "?").Length;
 	}
+
 }
 
 
@@ -101,6 +111,3 @@ public class Day08 : AdventOfCode
 """, 7)]
 [InlineData("\"\\x27\"", 1)]
 void Test(string s, int exp) => Assert.Equal(exp, Day08.CalcLineA(s));
-
-
-
