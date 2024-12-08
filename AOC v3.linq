@@ -461,6 +461,17 @@ public class AoCStorage
 
 public static class  Exte
 {
+	public static bool IsInsideArray<T>(this T[,] arr, int y, int x)
+	{
+
+		//end of array
+		if (x < 0 || x >= arr.GetLength(0) || y < 0 || y >= arr.GetLength(1))
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	public static string BigRedDump(this string s, string color = "red", int size = 3)
 	{
 		// You can dump any other HTML element as follows:
