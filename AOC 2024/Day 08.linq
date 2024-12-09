@@ -46,6 +46,7 @@ public class Day08 : AdventOfCode
 
 		//create array
 		var dic = new Dictionary<char, List<Antanne>>();
+		
 		for(int x = 0; x < lines.Length; x++)
 		{
 			for(int y = 0; y < lines.Length; y++)
@@ -84,21 +85,10 @@ public class Day08 : AdventOfCode
 			}
 		}
 
-		int count= 0; 
-		for (int y = 0; y < arr.GetLength(1); y++)
-		{
-			for (int x = 0; x < arr.GetLength(0); x++)
-			{
-				if(arr[y,x].Value == '.') continue;
-				count ++;
-				
-			}			
-		}
-
 		//wtf still not sure why
 		if(depth == 1) 
 			return hs.Count();		
-		return count.Dump();		
+		return arr.GetItems(z => z.Value != '.').Count();		
 	}
 
 

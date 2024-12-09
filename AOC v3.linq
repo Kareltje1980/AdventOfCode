@@ -123,17 +123,19 @@ public abstract class AdventOfCode
 	[Benchmark]
 	public virtual object SolveA()
 	{
-		this.AnswerA = this.SolveA(this.Lines).ToString();
+		var answer = this.SolveA(this.Lines).ToString();
+		this.AnswerA = answer;
 		this.dc.UpdateContent(this);
-		return this.AnswerA;
+		return answer;
 	}
 
 	[Benchmark]
 	public virtual object SolveB()
-	{		
-		this.AnswerB = this.SolveB(this.Lines).ToString();
+	{
+		var answer = this.SolveB(this.Lines).ToString();
+		this.AnswerB = answer;
 		this.dc.UpdateContent(this);
-		return this.AnswerB;
+		return answer;
 	}
 
 	public string[] Lines => this.Storage.InputLines;
@@ -461,6 +463,34 @@ public class AoCStorage
 
 public static class  Exte
 {
+	public static IEnumerable<(int y, int x, T res)> GetItems<T>(this T[,] arr)
+		=> arr.GetItems(a => true);
+	
+	public static IEnumerable<(int y, int x, T res)> GetItems<T>(this T[,] arr, Predicate<T> test)
+	{
+		for (int y = 0; y < arr.GetLength(1); y++)
+		{
+			for (int x = 0; x < arr.GetLength(0); x++)
+			{
+				if (test(arr[y, x]))
+					yield return (y, x, arr[y, x]);
+			}
+		}
+	}
+
+	public static T[,] GetArray<T>(this string[] lines, Func<char, T> Create)
+	{
+		var arr = new T[lines.Length, lines[0].Length];
+		for (int x = 0; x < lines.Length; x++)
+		{
+			for (int y = 0; y < lines.Length; y++)
+			{
+				arr[y, x] = Create(lines[y][x]);
+			}
+		}
+		return arr;
+	}
+
 	public static bool IsInsideArray<T>(this T[,] arr, int y, int x)
 	{
 
